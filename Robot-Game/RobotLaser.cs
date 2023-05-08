@@ -13,7 +13,7 @@ namespace Robot_Game
         public RobotLaserIntensity() { }
         public void Kill()
         {
-            this.LaserDamage = 50;
+            this.LaserDamage = 5;
             this.StunDuration = 0;
         }
         public void Stun()

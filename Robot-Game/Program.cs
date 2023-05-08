@@ -4,10 +4,11 @@ using Robot_Game;
 Robot robot = new Robot();
 robot.Initialise();
 robot.Intensity.Kill();
-CivilianPopulation cv=new CivilianPopulation();
-robot.AddTarget(cv);
-while (cv.IsAlive())
+ReinforcedSquad Rangers337th=new ReinforcedSquad(new Squadron(new InfantryMan()), new ATTeam());
+robot.AddTarget(Rangers337th.Soldiers);
+while (robot.Targets.Count>0)
 {
     robot.AttackCurrentTarget();
 }
+
 Console.ReadKey();

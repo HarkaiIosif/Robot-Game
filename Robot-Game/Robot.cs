@@ -7,12 +7,14 @@ internal class Robot
     public List<Entity> Targets { get; }
     public Entity CurrentTarget { get; set; }
     public RobotLaserIntensity Intensity { get; set; }
+    public IonShields Shiels { get; set; }
     public Robot()
     {
         this.RobotHealth = 500;
         this.Intensity = new RobotLaserIntensity();
-        Intensity.Stun();
-        Targets = new List<Entity>();
+        this.Intensity.Stun();
+        this.Targets = new List<Entity>();
+        this.Shiels=new IonShields();
     }
     public void Initialise()
     {
@@ -22,6 +24,7 @@ internal class Robot
         if (t == password)
         {
             this.RobotHealth = 500;
+            Shiels=new IonShields();
             Console.WriteLine("Logged in , robot activated");
         }
         else
@@ -31,21 +34,27 @@ internal class Robot
     }
     public void AddTarget(Entity entity)
     {
-        if (!Targets.Contains(entity)) Targets.Add(entity);
+        Targets.Add(entity);
         CurrentTarget = Targets[0];
+    }
+    public void AddTarget(List<Entity> targets)
+    {
+        foreach (Entity target in targets) Targets.Add(target);
+        CurrentTarget= Targets[0];
     }
     public void AttackCurrentTarget()
     {
         if (CurrentTarget == null) SwitchToNextTarget();
         if (CurrentTarget != null)
         {
-            CurrentTarget.Health -= this.Intensity.LaserDamage;
-            this.RobotHealth -= CurrentTarget.Damage;
-            Console.WriteLine($"The robot has attacked the {CurrentTarget.Name} dealing {this.Intensity.LaserDamage} damage leaving the enemy with {CurrentTarget.Health} left");   
-            if (CurrentTarget.IsAlive() == false)
+            if (CurrentTarget.IsAlive())
             {
-                SwitchToNextTarget();
+                CurrentTarget.Health -= this.Intensity.LaserDamage;
+                this.RobotHealth -= CurrentTarget.Damage;
+                Console.WriteLine($"The robot has attacked the {CurrentTarget.Name} dealing {this.Intensity.LaserDamage} damage leaving the enemy with {CurrentTarget.Health} left");
+                Console.WriteLine(this.RobotHealth.ToString());
             }
+            else SwitchToNextTarget();
         }
 
     }

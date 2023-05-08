@@ -11,16 +11,18 @@ namespace Robot_Game
         public int Health { get; set; }
         public int Damage { get; set; }
         public string Name { get; set; }    
+        public string WeaponType { get;set; }
         public bool IsAlive()
         {
             if(Health > 0) return true;
             else return false;
         }
-        public Entity(int damage, int health,string name) 
+        public Entity(int damage, int health,string name,string weapon) 
         {
             this.Health = health;
             this.Damage = damage;
-            this.Name = name;   
+            this.Name = name;
+            this.WeaponType = weapon;
         }
     }
 }
