@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Robot_Game
 {
-    internal  class RobotLaserIntensity
+    public  class RobotLaserIntensity
     {   public int LaserDamage { get; set; }
         public int StunDuration { get; set; }
         public RobotLaserIntensity() { }

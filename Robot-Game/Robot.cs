@@ -1,36 +1,32 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Robot_Game;
 
-internal class Robot
+public class Robot
 { public int RobotHealth { get; set; }
 
     public List<Entity> Targets { get; }
     public Entity CurrentTarget { get; set; }
     public RobotLaserIntensity Intensity { get; set; }
-    public IonShields Shiels { get; set; }
+    public IonShields Shields { get; set; }
     public Robot()
     {
         this.RobotHealth = 500;
         this.Intensity = new RobotLaserIntensity();
         this.Intensity.Stun();
         this.Targets = new List<Entity>();
-        this.Shiels=new IonShields();
+        this.Shields=new IonShields();
     }
     public void Initialise()
     {
-        Console.WriteLine("Welcome operator please input your password");
-        string t = Console.ReadLine();
-        string password = "1234";
-        if (t == password)
+        Console.WriteLine("Welcome operator please input your password");   
+        string password = "12345";
+        string t;
+        do
         {
-            this.RobotHealth = 500;
-            Shiels=new IonShields();
-            Console.WriteLine("Logged in , robot activated");
-        }
-        else
-        {
-            Console.WriteLine("Wrong password");
-        }
+            t = Console.ReadLine();
+            if (t != password) Console.WriteLine("Wrong password please try again");
+        } while (t != password);
+        Console.WriteLine("Robot Initialised");
     }
     public void AddTarget(Entity entity)
     {
@@ -48,11 +44,9 @@ internal class Robot
         if (CurrentTarget != null)
         {
             if (CurrentTarget.IsAlive())
-            {
-                CurrentTarget.Health -= this.Intensity.LaserDamage;
-                this.RobotHealth -= CurrentTarget.Damage;
-                Console.WriteLine($"The robot has attacked the {CurrentTarget.Name} dealing {this.Intensity.LaserDamage} damage leaving the enemy with {CurrentTarget.Health} left");
-                Console.WriteLine(this.RobotHealth.ToString());
+            {   CurrentTarget.TakeDamage(this);
+                Console.WriteLine($"The robot has attacked the {CurrentTarget.Name} dealing {this.Intensity.LaserDamage} damage leaving the enemy with {CurrentTarget.Health} health left");
+                this.IncomingDamage(CurrentTarget);
             }
             else SwitchToNextTarget();
         }
@@ -70,6 +64,32 @@ internal class Robot
         {
             CurrentTarget = Targets[0];
         }
+    }
+    public void IncomingDamage(Entity entity)
+    {
+        string t=entity.WeaponType;
+        switch (t)
+        {
+            case "LowCal":
+                {
+                    this.RobotHealth-=this.Shields.LowCaliberDamageTaken(entity.Damage);
+                    Console.WriteLine($"We took {this.Shields.LowCaliberDamageTaken(entity.Damage)} damage, leaving us with {this.RobotHealth} health and {this.Shields.CurrentCharges} shield charges left");
+                    break;
+                }
+            case "HighCal":
+                {
+                    this.RobotHealth-=this.Shields.HighCaliberDamageTaken(entity.Damage);
+                    Console.WriteLine($"We took {this.Shields.HighCaliberDamageTaken(entity.Damage)} damage, leaving us with {this.RobotHealth} health and {this.Shields.CurrentCharges} shield charges left");
+                    break;
+                }
+            case "Ions" :
+                {
+                    this.RobotHealth-=this.Shields.IonDamageTaken(entity.Damage);
+                    Console.WriteLine($"We took {this.Shields.IonDamageTaken(entity.Damage)} damage, leaving us with {this.RobotHealth} health and {this.Shields.CurrentCharges} shield charges left");
+                    break;
+                }
+        }
+
     }
     public void Deactivate()
     {

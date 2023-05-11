@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Robot_Game
 {
-    internal class IonShields
+    public class IonShields
     {   public int TotalCharges { get; set; }
         public int CurrentCharges { get; set; } 
         public IonShields() 
@@ -19,7 +19,7 @@ namespace Robot_Game
             if(this.CurrentCharges>0)  IncomingDamage /= 2;
             return IncomingDamage;
         }
-        public int HighCaliberChargesTaken(int IncomingDamage)
+        public int HighCaliberDamageTaken(int IncomingDamage)
         {
             if (this.CurrentCharges > 0) 
             { 

@@ -24,5 +24,9 @@ namespace Robot_Game
             this.Name = name;
             this.WeaponType = weapon;
         }
+        public virtual void TakeDamage(Robot Rob)
+        {
+            this.Health -= Rob.Intensity.LaserDamage;
+        }
     }
 }
