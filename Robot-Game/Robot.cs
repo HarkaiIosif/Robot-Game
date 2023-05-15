@@ -3,7 +3,7 @@ using Robot_Game;
 
 public class Robot
 { public int RobotHealth { get; set; }
-
+    Random rnd=new Random();
     public List<Entity> Targets { get; }
     public Entity CurrentTarget { get; set; }
     public RobotLaserIntensity Intensity { get; set; }
@@ -38,6 +38,11 @@ public class Robot
         foreach (Entity target in targets) Targets.Add(target);
         CurrentTarget= Targets[0];
     }
+    public void AddTarget(Planet planet)
+    {
+        foreach (Platoon platoon in planet.Combatants) AddTarget(platoon.Soldiers);
+        foreach (Entity entity in planet.NonCombatants) AddTarget(entity);
+    }
     public void AttackCurrentTarget()
     {
         if (CurrentTarget == null) SwitchToNextTarget();
@@ -50,7 +55,8 @@ public class Robot
             }
             else SwitchToNextTarget();
         }
-
+        int i = rnd.Next(1, 3);
+        if (i == 2) this.Shields.ShieldRepair();
     }
     public void SwitchToNextTarget()
     {
@@ -89,7 +95,10 @@ public class Robot
                     break;
                 }
         }
-
+    }
+    public void IncomingDamage(Officer officer)
+    {
+        this.RobotHealth -= officer.OfficerAbility();
     }
     public void Deactivate()
     {

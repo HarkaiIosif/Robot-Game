@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Robot_Game
 {
     
-    internal class Squadron:Entity
+    public class Squadron:Entity
     {  public int rhp { get; set; }
        public int rdm { get; set; }
        public Squadron(Entity Regular):base(Regular.Damage, Regular.Health,Regular.Name,Regular.WeaponType) 
