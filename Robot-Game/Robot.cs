@@ -18,7 +18,8 @@ public class Robot
     }
     public void Initialise()
     {
-        Console.WriteLine("Welcome operator please input your password");   
+        Console.WriteLine("Welcome operator please input your password");
+        Console.WriteLine("You look around your workstation for the password, luckily the previous operator scribbled it on the wall, it reads 12345");
         string password = "12345";
         string t;
         do
